@@ -1,0 +1,3 @@
+rootProject.name = 'java-koans'
+include 'utils'
+include 'koans'
