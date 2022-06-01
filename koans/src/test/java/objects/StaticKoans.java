@@ -13,13 +13,13 @@ class StaticKoans {
 
     @Koan
     void a_static_variable_is_tied_to_a_class_and_not_its_instances() {
-        assertThat(StaticKoans.x).isEqualTo(__);
+        assertThat(StaticKoans.x).isEqualTo(3);
 
         StaticKoans.x = 5;
-        assertThat(new StaticKoans().x).isEqualTo(__);
+        assertThat(new StaticKoans().x).isEqualTo(5);
 
         new StaticKoans().x = 7;
-        assertThat(StaticKoans.x).isEqualTo(__);
+        assertThat(StaticKoans.x).isEqualTo(7);
     }
 
     static class StaticInner {
@@ -28,24 +28,24 @@ class StaticKoans {
 
     @Koan
     void an_inner_class_can_be_declared_static() {
-        assertThat(StaticKoans.StaticInner.y).isEqualTo(__);
+        assertThat(StaticKoans.StaticInner.y).isEqualTo(1);
     }
 
     @Koan
     void a_static_import_can_be_used_to_shorten_the_access_to_the_static_member_of_another_class() {
         // Check the 'import static' part of this file!
-        assertThat(y).isEqualTo(__);
+        assertThat(y).isEqualTo(1);
     }
 
     @Koan
     void a_static_member_can_be_referenced_directly() {
-        assertThat(x).isEqualTo(__);
+        assertThat(x).isEqualTo(3);
     }
 
     @Koan
     void a_method_cannot_declare_static_variables() {
         int z = 1; // Try to declare this variable 'static'. Does it compile? Why?
-        assertThat(z).isEqualTo(__);
+        assertThat(z).isEqualTo(1);
     }
 
     static class WithStaticBlock {
@@ -58,7 +58,7 @@ class StaticKoans {
 
     @Koan
     void the_static_block_is_called_once_when_the_class_is_intialized() {
-        assertThat(WithStaticBlock.x).isEqualTo(__);
+        assertThat(WithStaticBlock.x).isEqualTo(3);
     }
 
     static class WithStaticValueAndStaticBlock {
@@ -71,7 +71,7 @@ class StaticKoans {
 
     @Koan
     void the_static_block_is_called_after_static_attributes_are_initialized() {
-        assertThat(WithStaticValueAndStaticBlock.x).isEqualTo(__);
+        assertThat(WithStaticValueAndStaticBlock.x).isEqualTo(8);
     }
 
     static class WithNonStaticBlock {
@@ -84,8 +84,8 @@ class StaticKoans {
 
     @Koan
     void the_non_static_block_is_called_each_time_an_instance_of_the_class_is_initialized() {
-        assertThat(new WithNonStaticBlock().x).isEqualTo(__);
-        assertThat(new WithNonStaticBlock().x).isEqualTo(__);
-        assertThat(new WithNonStaticBlock().x).isEqualTo(__);
+        assertThat(new WithNonStaticBlock().x).isEqualTo(8);
+        assertThat(new WithNonStaticBlock().x).isEqualTo(8);
+        assertThat(new WithNonStaticBlock().x).isEqualTo(3);
     }
 }

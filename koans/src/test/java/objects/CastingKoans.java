@@ -100,7 +100,7 @@ class CastingKoans {
     @Koan
     void class_casting() {
         try {
-            Object o = new Object(); // __
+            Parent o = new Parent(); // __
             ((Sleepable) o).sleep();
         } catch (ClassCastException e) {
             fail("Object does not implement Sleepable, maybe one of the other classes do?");

@@ -44,6 +44,6 @@ class VarArgsKoans {
 
     @Koan
     void you_can_have_other_types_in_the_method_signature() {
-        assertThat(prefixedLength("This is how many items were passed in: ", 1, 2, 3, 4)).isEqualTo(4);
+        assertThat(prefixedLength("This is how many items were passed in: ", 1, 2, 3, 4)).isEqualTo("This is how many items were passed in: ", 4);
     }
 }

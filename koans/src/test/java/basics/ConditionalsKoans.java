@@ -195,9 +195,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("Yes");
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(0);
     }
 
     @Koan
@@ -210,9 +210,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("Yes");
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(1);
     }
 
     @Koan
@@ -225,9 +225,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("No");
+        assertThat(trueCount.count).isEqualTo(0);
+        assertThat(falseCount.count).isEqualTo(1);
     }
 
     @Koan
@@ -240,9 +240,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("No");
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(1);
     }
 
     @Koan
@@ -255,9 +255,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("Yes");
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(1);
     }
 
     @Koan
@@ -270,9 +270,9 @@ class ConditionalsKoans {
             result = "Yes";
         }
 
-        assertThat(result).isEqualTo(__);
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(result).isEqualTo("Yes");
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(1);
     }
 
     @Koan
@@ -286,8 +286,8 @@ class ConditionalsKoans {
         }
 
         assertThat(result).isEqualTo("No");
-        assertThat(trueCount.count).isEqualTo(__);
-        assertThat(falseCount.count).isEqualTo(__);
+        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(falseCount.count).isEqualTo(0);
     }
 
     @Koan
