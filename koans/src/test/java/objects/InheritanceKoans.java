@@ -50,12 +50,12 @@ class InheritanceKoans {
         Dog max = new Dog();
         Puppy barney = new Puppy();
 
-        assertThat(bob.makeSomeNoise()).isEqualTo(__);
-        assertThat(max.makeSomeNoise()).isEqualTo(__);
-        assertThat(barney.makeSomeNoise()).isEqualTo(__);
+        assertThat(bob.makeSomeNoise()).isEqualTo("Moo!");
+        assertThat(max.makeSomeNoise()).isEqualTo("Woof!");
+        assertThat(barney.makeSomeNoise()).isEqualTo("Squeak!");
 
-        assertThat(max.canFetch()).isEqualTo(__);
-        assertThat(barney.canFetch()).isEqualTo(__);
+        assertThat(max.canFetch()).isEqualTo(true);
+        assertThat(barney.canFetch()).isEqualTo(false);
         // assertThat(bob.canFetch()).isEqualTo(__);    // Is it possible? Why?
     }
 
@@ -65,9 +65,9 @@ class InheritanceKoans {
         Animal max = new Dog();
         Animal barney = new Puppy();
 
-        assertThat(bob.makeSomeNoise()).isEqualTo(__);
-        assertThat(max.makeSomeNoise()).isEqualTo(__);
-        assertThat(barney.makeSomeNoise()).isEqualTo(__);
+        assertThat(bob.makeSomeNoise()).isEqualTo("Moo!");
+        assertThat(max.makeSomeNoise()).isEqualTo("Woof!");
+        assertThat(barney.makeSomeNoise()).isEqualTo("Squeak!");
 
         // assertThat(max.canFetch()).isEqualTo(__);    // Is it possible? Why?
         // assertThat(barney.canFetch()).isEqualTo(__); // Is it possible? Why?
@@ -79,10 +79,10 @@ class InheritanceKoans {
         Animal someAnimal = new Cow();
         Animal bob = new Cow();
 
-        assertThat(someAnimal.makeSomeNoise().equals(bob.makeSomeNoise())).isEqualTo(__);
-        assertThat(bob instanceof Animal).isEqualTo(__);
-        assertThat(bob instanceof Cow).isEqualTo(__);
-        assertThat(bob instanceof Puppy).isEqualTo(__);
+        assertThat(someAnimal.makeSomeNoise().equals(bob.makeSomeNoise())).isEqualTo(true);
+        assertThat(bob instanceof Animal).isEqualTo(true);
+        assertThat(bob instanceof Cow).isEqualTo(true);
+        assertThat(bob instanceof Puppy).isEqualTo(false);
     }
 
     @Koan
@@ -90,10 +90,10 @@ class InheritanceKoans {
         Dog max = new Dog();
         Puppy barney = new Puppy();
 
-        assertThat(max instanceof Puppy).isEqualTo(__);
-        assertThat(max instanceof Dog).isEqualTo(__);
-        assertThat(barney instanceof Puppy).isEqualTo(__);
-        assertThat(barney instanceof Dog).isEqualTo(__);
+        assertThat(max instanceof Puppy).isEqualTo(false);
+        assertThat(max instanceof Dog).isEqualTo(true);
+        assertThat(barney instanceof Puppy).isEqualTo(true);
+        assertThat(barney instanceof Dog).isEqualTo(true);
     }
 
     abstract class Farm {
@@ -110,7 +110,7 @@ class InheritanceKoans {
     @Koan
     void overridden_methods_may_return_subtype() {
         Cow cow = (Cow) new CowFarm().findAnimal(); // What do you need to change in order to get rid of this type cast?
-        assertThat(cow instanceof Cow).isEqualTo(__);
+        assertThat(cow instanceof Cow).isEqualTo(true);
     }
 
     @Koan
@@ -129,7 +129,7 @@ class InheritanceKoans {
             }
         }
 
-        assertThat(new Child().result).isEqualTo(__);
+        assertThat(new Child().result).isEqualTo("axg");
     }
 
     @Koan
@@ -153,6 +153,6 @@ class InheritanceKoans {
             }
         }
 
-        assertThat(new Child().result).isEqualTo(__);
+        assertThat(new Child().result).isEqualTo("aBoog");
     }
 }

@@ -21,7 +21,7 @@ class InterfacesKoans {
             }
         };
 
-        assertThat(action.description()).isEqualTo(__);
+        assertThat(action.description()).isEqualTo("Anonymous");
     }
 
     class LoginAction implements Action {
@@ -36,7 +36,7 @@ class InterfacesKoans {
     void an_interface_implementation_must_implement_its_behaviors() {
         LoginAction loginAction = new LoginAction();
 
-        assertThat(loginAction.description()).isEqualTo(__);
+        assertThat(loginAction.description()).isEqualTo("Login");
     }
 
     interface DefaultAction {
@@ -51,7 +51,7 @@ class InterfacesKoans {
         DefaultAction defaultAction = new DefaultAction() {
         };
 
-        assertThat(defaultAction.description()).isEqualTo(__);
+        assertThat(defaultAction.description()).isEqualTo("Default");
     }
 
     class Logout implements DefaultAction {
@@ -62,7 +62,7 @@ class InterfacesKoans {
         Logout logout = new Logout() {
         };
 
-        assertThat(logout.description()).isEqualTo(__);
+        assertThat(logout.description()).isEqualTo("Default");
     }
 
     class Walk implements DefaultAction {
@@ -78,7 +78,7 @@ class InterfacesKoans {
         Walk walk = new Walk() {
         };
 
-        assertThat(walk.description()).isEqualTo(__);
+        assertThat(walk.description()).isEqualTo("Walk");
     }
 
     interface JobOffer {
@@ -99,6 +99,6 @@ class InterfacesKoans {
     void a_method_must_be_overridden_when_it_has_multiple_conflicting_declarations() {
         ConflictingImplementation conflictingImplementation = new ConflictingImplementation();
 
-        assertThat(conflictingImplementation.description()).isEqualTo(__);
+        assertThat(conflictingImplementation.description()).isEqualTo("Conflicting method declaration");
     }
 }

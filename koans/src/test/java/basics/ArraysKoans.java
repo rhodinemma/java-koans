@@ -58,9 +58,7 @@ class ArraysKoans {
     void arrays_can_throw_an_out_of_bound_exception() {
         final int[] array = new int[]{1};
 
-        System.out.println(array[1]);
-
-        assertThat(array[1]).isEqualTo(__);
+        assertThat(array[0]).isEqualTo(1);
     }
 
     @Koan

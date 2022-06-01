@@ -90,8 +90,8 @@ class PrimitivesKoans {
 
     @Koan
     void bytes_have_a_smaller_range_than_shorts() {
-        assertThat(Byte.MIN_VALUE).isEqualTo(-127);
-        assertThat(Byte.MAX_VALUE).isEqualTo(128);
+        assertThat(Byte.MIN_VALUE).isEqualTo(-128);
+        assertThat(Byte.MAX_VALUE).isEqualTo(127);
     }
 
     @Koan

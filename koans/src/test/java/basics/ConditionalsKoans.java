@@ -167,7 +167,7 @@ class ConditionalsKoans {
                 result += "Nothing";
         }
 
-        assertThat(result).isEqualTo("NothingThe letter 'a'");
+        assertThat(result).isEqualTo("The letter 'a'");
     }
 
     class Counter {

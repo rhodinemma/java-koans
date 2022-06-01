@@ -24,19 +24,19 @@ class InnerClassesKoans {
     @Koan
     void creating_inner_class_instance() {
         Inner someObject = new Inner();
-        assertThat(someObject.doStuff()).isEqualTo(__);
+        assertThat(someObject.doStuff()).isEqualTo("stuff");
     }
 
     @Koan
     void creating_inner_class_instance_with_other_syntax() {
         InnerClassesKoans.Inner someObject = this.new Inner();
-        assertThat(someObject.doStuff()).isEqualTo(__);
+        assertThat(someObject.doStuff()).isEqualTo("stuff");
     }
 
     @Koan
     void inner_classes_can_access_outer_class_members() {
         Inner someObject = new Inner();
-        assertThat(someObject.returnOuter()).isEqualTo(__);
+        assertThat(someObject.returnOuter()).isEqualTo(10);
     }
 
     @Koan
@@ -47,7 +47,7 @@ class InnerClassesKoans {
             }
         } // No semicolon required here.
 
-        assertThat(new InnerClassInMethod().oneHundred()).isEqualTo(__);
+        assertThat(new InnerClassInMethod().oneHundred()).isEqualTo(100);
     }
 
     class AnotherInnerClass {
@@ -70,10 +70,10 @@ class InnerClassesKoans {
     @Koan
     void method_scoped_inner_classes_can_leak_instances_thanks_to_inheritance() {
         AnotherInnerClass innerClass = new AnotherInnerClass();
-        assertThat(innerClass.thousand()).isEqualTo(__);
+        assertThat(innerClass.thousand()).isEqualTo(1000);
 
         AnotherInnerClass specialInnerClass = innerClass.specialReturn();
-        assertThat(specialInnerClass.thousand()).isEqualTo(__);
+        assertThat(specialInnerClass.thousand()).isEqualTo(2000);
     }
 
     int theAnswer() {
@@ -89,7 +89,7 @@ class InnerClassesKoans {
             }
         }; // Semicolon is required here because this is an affectation, not a declaration.
 
-        assertThat(anonymous.theAnswer()).isEqualTo(__);
+        assertThat(anonymous.theAnswer()).isEqualTo(23);
     }
 
     interface Ignorable {
@@ -104,13 +104,13 @@ class InnerClassesKoans {
             }
         };
 
-        assertThat(ignorable.ignoreAll()).isEqualTo("SomeInterestingString");
+        assertThat(ignorable.ignoreAll()).isEqualTo(null);
     }
 
     @Koan
     void inner_class_and_inheritance() {
         Inner someObject = new Inner();
-        assertThat(someObject instanceof Inner).isEqualTo(__);
+        assertThat(someObject instanceof Inner).isEqualTo(true);
         // assertThat(someObject instanceof InnerClassesKoans).isEqualTo(__); // Is it possible? Why? What does that imply for inheritance?
     }
 
@@ -121,6 +121,6 @@ class InnerClassesKoans {
     @Koan
     void inner_class_extending_outer_class_and_inheritance() {
         OtherInner someObject = new OtherInner();
-        assertThat(someObject instanceof InnerClassesKoans).isEqualTo(__);
+        assertThat(someObject instanceof InnerClassesKoans).isEqualTo(true);
     }
 }
