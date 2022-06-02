@@ -24,7 +24,7 @@ class LambdaKoans {
 
         final Specification<Integer> isOdd = new IsOdd();
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
     }
 
     @Koan
@@ -36,14 +36,14 @@ class LambdaKoans {
             }
         };
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
     }
 
     @Koan
     void you_can_create_a_lambda_from_an_interface_with_one_method() {
         Specification<Integer> isOdd = candidate -> candidate % 2 != 0;
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
     }
 
     // This annotation will ensure that your interface has only one abstract method.
@@ -63,8 +63,8 @@ class LambdaKoans {
         ComplexSpecification<Integer> isOdd = candidate -> candidate % 2 != 0;
         ComplexSpecification<Integer> isEven = isOdd.not();
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
-        assertThat(isEven.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
+        assertThat(isEven.isSatisfiedBy(3)).isEqualTo(false);
     }
 
     boolean isOdd(final int candidate) {
@@ -75,19 +75,19 @@ class LambdaKoans {
     void a_method_can_be_called_from_a_lambda_body() {
         Specification<Integer> isOdd = candidate -> isOdd(candidate);
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
     }
 
     @Koan
     void a_method_reference_can_be_used_when_a_method_has_the_expected_argument_and_return_value() {
         Specification<Integer> isOdd = this::isOdd;
 
-        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(isOdd.isSatisfiedBy(3)).isEqualTo(true);
     }
 
     @Koan
     void a_method_reference_is_a_lambda_instance_in_itself() {
-        assertThat(((Specification<Integer>) this::isOdd).isSatisfiedBy(3)).isEqualTo(__);
+        assertThat(((Specification<Integer>) this::isOdd).isSatisfiedBy(3)).isEqualTo(true);
     }
 
     @Koan
@@ -95,13 +95,14 @@ class LambdaKoans {
         final int divideBy = 5;
         Specification<Integer> isMultipleOfFive = candidate -> candidate % divideBy == 0;
 
-        assertThat(isMultipleOfFive.isSatisfiedBy(5)).isEqualTo(__);
+
+        assertThat(isMultipleOfFive.isSatisfiedBy(5)).isEqualTo(true);
 
         // Try to remove the 'final' keyword from the divideBy variable. Does it compile? Why?
         // Now uncomment the line below. Does it compile? Why?
         // divideBy = 3;
 
-        assertThat(isMultipleOfFive.isSatisfiedBy(10)).isEqualTo(__);
+        assertThat(isMultipleOfFive.isSatisfiedBy(10)).isEqualTo(true);
     }
 
     interface FailWithMessage {
@@ -112,6 +113,6 @@ class LambdaKoans {
     void a_lambda_body_is_lazily_initialized() {
         FailWithMessage failWithMessage = () -> Assertions.fail("If you comment the lambda call, the Assertions.fail(String) method will never be executed.");
 
-        failWithMessage.fail();
+        //failWithMessage.fail();
     }
 }

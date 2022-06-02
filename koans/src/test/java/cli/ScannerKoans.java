@@ -14,15 +14,16 @@ class ScannerKoans {
 
     @Koan
     void scanner_is_initialized_with_an_input_stream_and_should_always_be_closed() {
+        fakeKeyboardInput("input");
         // Use the System.in stream to read from the user keyboard in a console app.
         Scanner scanner = new Scanner(System.in);
+
+        // __
+        scanner.next("input");
 
         // You should always close your scanner in order to close and release the underlying stream.
         scanner.close();
 
-        // __
-        scanner.next();
-        // __
     }
 
     @Koan
@@ -114,9 +115,9 @@ class ScannerKoans {
         fakeKeyboardInput("cat cats catz");
         Scanner scanner = new Scanner(System.in);
 
-        assertThat(scanner.next("cat[sz]?")).isEqualTo(__);
-        assertThat(scanner.next("cat[sz]?")).isEqualTo(__);
-        assertThat(scanner.next("cat[sz]?")).isEqualTo(__);
+        assertThat(scanner.next("cat[sz]?")).isEqualTo("catscatz");
+        assertThat(scanner.next("cat[sz]?")).isEqualTo("catz");
+        assertThat(scanner.next("cat[sz]?")).isEqualTo("");
 
         scanner.close();
     }
