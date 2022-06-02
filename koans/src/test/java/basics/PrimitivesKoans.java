@@ -68,8 +68,8 @@ class PrimitivesKoans {
 
     @Koan
     void shorts_have_a_smaller_range_than_ints() {
-        assertThat(Short.MIN_VALUE).isEqualTo(-32768);
-        assertThat(Short.MAX_VALUE).isEqualTo(32767);
+        assertThat(Short.MIN_VALUE).isEqualTo((short)-32768);
+        assertThat(Short.MAX_VALUE).isEqualTo((short)32767);
     }
 
     @Koan
@@ -90,8 +90,8 @@ class PrimitivesKoans {
 
     @Koan
     void bytes_have_a_smaller_range_than_shorts() {
-        assertThat(Byte.MIN_VALUE).isEqualTo(-128);
-        assertThat(Byte.MAX_VALUE).isEqualTo(127);
+        assertThat(Byte.MIN_VALUE).isEqualTo((byte)-128);
+        assertThat(Byte.MAX_VALUE).isEqualTo((byte)127);
     }
 
     @Koan

@@ -85,7 +85,7 @@ class StaticKoans {
     @Koan
     void the_non_static_block_is_called_each_time_an_instance_of_the_class_is_initialized() {
         assertThat(new WithNonStaticBlock().x).isEqualTo(8);
-        assertThat(new WithNonStaticBlock().x).isEqualTo(8);
-        assertThat(new WithNonStaticBlock().x).isEqualTo(3);
+        assertThat(new WithNonStaticBlock().x).isEqualTo(13);
+        assertThat(new WithNonStaticBlock().x).isEqualTo(18);
     }
 }

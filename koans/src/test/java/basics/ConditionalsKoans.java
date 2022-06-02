@@ -286,7 +286,7 @@ class ConditionalsKoans {
         }
 
         assertThat(result).isEqualTo("No");
-        assertThat(trueCount.count).isEqualTo(1);
+        assertThat(trueCount.count).isEqualTo(2);
         assertThat(falseCount.count).isEqualTo(0);
     }
 
