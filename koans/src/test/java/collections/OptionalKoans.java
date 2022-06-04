@@ -18,7 +18,7 @@ class OptionalKoans {
         try {
             lastName.toUpperCase();
         } catch (final Exception e) {
-            assertThat(e instanceof NullPointerException).isEqualTo(__);
+            assertThat(e instanceof NullPointerException).isEqualTo(true);
         }
     }
 
@@ -26,25 +26,25 @@ class OptionalKoans {
     void an_optional_is_a_wrapper_of_any_type_allowing_safe_null_manipulation() {
         Optional<String> lastName = Optional.ofNullable(null);
 
-        assertThat(lastName.isPresent()).isEqualTo(__);
-        assertThat(lastName.isEmpty()).isEqualTo(__);
+        assertThat(lastName.isPresent()).isEqualTo(false);
+        assertThat(lastName.isEmpty()).isEqualTo(true);
     }
 
     @Koan
     void an_optional_can_be_declared_empty() {
         Optional<String> lastName = Optional.empty();
 
-        assertThat(lastName.isPresent()).isEqualTo(__);
-        assertThat(lastName.isEmpty()).isEqualTo(__);
+        assertThat(lastName.isPresent()).isEqualTo(false);
+        assertThat(lastName.isEmpty()).isEqualTo(true);
     }
 
     @Koan
     void an_optional_can_wrap_a_value() {
         Optional<String> lastName = Optional.of("lastname");
 
-        assertThat(lastName.isPresent()).isEqualTo(__);
-        assertThat(lastName.isEmpty()).isEqualTo(__);
-        assertThat(lastName.get()).isEqualTo(__);
+        assertThat(lastName.isPresent()).isEqualTo(true);
+        assertThat(lastName.isEmpty()).isEqualTo(false);
+        assertThat(lastName.get()).isEqualTo("lastname");
     }
 
     @Koan
@@ -52,7 +52,7 @@ class OptionalKoans {
         try {
             Optional.of(null);
         } catch (final Exception e) {
-            assertThat(e instanceof NullPointerException).isEqualTo(__);
+            assertThat(e instanceof NullPointerException).isEqualTo(true);
         }
     }
 
@@ -63,7 +63,7 @@ class OptionalKoans {
         try {
             lastName.get();
         } catch (final Exception e) {
-            assertThat(e instanceof NoSuchElementException).isEqualTo(__);
+            assertThat(e instanceof NoSuchElementException).isEqualTo(true);
         }
     }
 
@@ -73,7 +73,7 @@ class OptionalKoans {
                 .map(String::toUpperCase)
                 .get();
 
-        assertThat(lastName).isEqualTo(__);
+        assertThat(lastName).isEqualTo("LASTNAME");
     }
 
     @Koan
@@ -81,8 +81,8 @@ class OptionalKoans {
         Optional<String> lastName = Optional.of("")
                 .filter(name -> !name.isBlank());
 
-        assertThat(lastName.isPresent()).isEqualTo(__);
-        assertThat(lastName.isEmpty()).isEqualTo(__);
+        assertThat(lastName.isPresent()).isEqualTo(false);
+        assertThat(lastName.isEmpty()).isEqualTo(true);
     }
 
     @Koan
@@ -90,15 +90,15 @@ class OptionalKoans {
         Optional<String> lastName = Optional.of("lastname")
                 .flatMap(name -> Optional.empty());
 
-        assertThat(lastName.isPresent()).isEqualTo(__);
-        assertThat(lastName.isEmpty()).isEqualTo(__);
+        assertThat(lastName.isPresent()).isEqualTo(false);
+        assertThat(lastName.isEmpty()).isEqualTo(true);
     }
 
     @Koan
     void or_else_can_be_used_to_declare_a_default_value() {
         Optional<Object> lastName = Optional.empty();
 
-        assertThat(lastName.orElse("null")).isEqualTo(__);
+        assertThat(lastName.orElse("null")).isEqualTo("null");
     }
 
     class HitCounter {
