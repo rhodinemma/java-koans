@@ -114,23 +114,23 @@ class OptionalKoans {
     void or_else_is_eagerly_executed() {
         HitCounter hitCounter = new HitCounter();
 
-        assertThat(Optional.of("last").orElse(hitCounter.increment())).isEqualTo(__);
-        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo(__);
-        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo(__);
-        assertThat(Optional.of("name").orElse(hitCounter.increment())).isEqualTo(__);
-        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo(__);
-        assertThat(Optional.of("").orElse(hitCounter.increment())).isEqualTo(__);
+        assertThat(Optional.of("last").orElse(hitCounter.increment())).isEqualTo("last");
+        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo("2");
+        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo("3");
+        assertThat(Optional.of("name").orElse(hitCounter.increment())).isEqualTo("name");
+        assertThat(Optional.empty().orElse(hitCounter.increment())).isEqualTo("5");
+        assertThat(Optional.of("").orElse(hitCounter.increment())).isEqualTo("");
     }
 
     @Koan
     void or_else_get_can_be_used_to_supply_a_lazily_initialized_default_value() {
         HitCounter hitCounter = new HitCounter();
 
-        assertThat(Optional.of("last").orElseGet(hitCounter::increment)).isEqualTo(__);
-        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo(__);
-        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo(__);
-        assertThat(Optional.of("name").orElseGet(hitCounter::increment)).isEqualTo(__);
-        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo(__);
-        assertThat(Optional.of("").orElseGet(hitCounter::increment)).isEqualTo(__);
+        assertThat(Optional.of("last").orElseGet(hitCounter::increment)).isEqualTo("last");
+        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo("1");
+        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo("2");
+        assertThat(Optional.of("name").orElseGet(hitCounter::increment)).isEqualTo("name");
+        assertThat(Optional.empty().orElseGet(hitCounter::increment)).isEqualTo("3");
+        assertThat(Optional.of("").orElseGet(hitCounter::increment)).isEqualTo("");
     }
 }

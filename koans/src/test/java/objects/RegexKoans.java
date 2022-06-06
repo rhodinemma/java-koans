@@ -13,7 +13,7 @@ class RegexKoans {
 
     @Koan
     void simple_pattern_matching() {
-        assertThat(Pattern.matches("cat", "cat")).isEqualTo(__);
+        assertThat(Pattern.matches("cat", "cat")).isEqualTo(true);
     }
 
     @Koan
@@ -21,10 +21,10 @@ class RegexKoans {
         Pattern pattern = Pattern.compile("cat");
 
         Matcher validMatcher = pattern.matcher("cat");
-        assertThat(validMatcher.matches()).isEqualTo(__);
+        assertThat(validMatcher.matches()).isEqualTo(true);
 
         Matcher invalidMatcher = pattern.matcher("dog");
-        assertThat(invalidMatcher.matches()).isEqualTo(__);
+        assertThat(invalidMatcher.matches()).isEqualTo(false);
     }
 
     @Koan
@@ -32,9 +32,9 @@ class RegexKoans {
         Pattern pattern = Pattern.compile("cat");
         Matcher matcher = pattern.matcher("catdogcat");
 
-        assertThat(matcher.find()).isEqualTo(__);
-        assertThat(matcher.find()).isEqualTo(__);
-        assertThat(matcher.find()).isEqualTo(__);
+        assertThat(matcher.find()).isEqualTo(true);
+        assertThat(matcher.find()).isEqualTo(true);
+        assertThat(matcher.find()).isEqualTo(false);
     }
 
     @Koan
@@ -42,11 +42,11 @@ class RegexKoans {
         Pattern pattern = Pattern.compile("cat");
         Matcher matcher = pattern.matcher("catdogcat");
 
-        assertThat(matcher.find()).isEqualTo(__);
-        assertThat(matcher.start()).isEqualTo(__);
-        assertThat(matcher.find()).isEqualTo(__);
-        assertThat(matcher.start()).isEqualTo(__);
-        assertThat(matcher.find()).isEqualTo(__);
+        assertThat(matcher.find()).isEqualTo(true);
+        assertThat(matcher.start()).isEqualTo(0);
+        assertThat(matcher.find()).isEqualTo(true);
+        assertThat(matcher.start()).isEqualTo(6);
+        assertThat(matcher.find()).isEqualTo(false);
     }
 
     @Koan
@@ -56,10 +56,10 @@ class RegexKoans {
 
         String[] results = matcher.results().map(MatchResult::group).toArray(String[]::new);
 
-        assertThat(results.length).isEqualTo(__);
-        assertThat(results[0]).isEqualTo(__);
-        assertThat(results[1]).isEqualTo(__);
-        assertThat(results[2]).isEqualTo(__);
+        assertThat(results.length).isEqualTo(3);
+        assertThat(results[0]).isEqualTo("cat");
+        assertThat(results[1]).isEqualTo("cats");
+        assertThat(results[2]).isEqualTo("catz");
     }
 
     @Koan
@@ -73,7 +73,7 @@ class RegexKoans {
         }
         matcher.appendTail(replacedValue);
 
-        assertThat(replacedValue.toString()).isEqualTo(__);
+        assertThat(replacedValue.toString()).isEqualTo("One dog, two dogs, three dogz.");
     }
 
     @Koan
@@ -87,7 +87,7 @@ class RegexKoans {
         }
         matcher.appendTail(replacedValue);
 
-        assertThat(replacedValue.toString()).isEqualTo(__);
+        assertThat(replacedValue.toString()).isEqualTo("One dog, two dogs, three dogz.");
     }
 
     @Koan
@@ -100,7 +100,7 @@ class RegexKoans {
             matcher.appendReplacement(replacedValue, "dog${plural}");
         }
 
-        assertThat(replacedValue.toString()).isEqualTo(__);
+        assertThat(replacedValue.toString()).isEqualTo("One dog, two dogs, three dogz");
     }
 
     @Koan
@@ -110,7 +110,7 @@ class RegexKoans {
 
         String replacedValue = matcher.replaceAll("dog$1");
 
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One dog, two dogs, three dogz.");
     }
 
     @Koan
@@ -120,7 +120,7 @@ class RegexKoans {
 
         String replacedValue = matcher.replaceAll(matchResult -> matchResult.group().toUpperCase());
 
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One CAT, two CATS, three CATZ.");
     }
 
     @Koan
@@ -130,7 +130,7 @@ class RegexKoans {
 
         String replacedValue = matcher.replaceFirst("dog");
 
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One dog, two cats, three catz.");
     }
 
     @Koan
@@ -140,7 +140,7 @@ class RegexKoans {
 
         String replacedValue = matcher.replaceFirst(matchResult -> matchResult.group().toUpperCase());
 
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One CAT, two cats, three catz.");
     }
 
     @Koan
@@ -148,15 +148,14 @@ class RegexKoans {
         String line = "One cat, two cats, three catz.";
         String replacedValue = line.replaceAll("[Cc]at([sz])+", "dog$1");
 
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One cat, two dogs, three dogz.");
     }
 
     @Koan
     void you_can_replace_the_first_occurrence_of_a_regex_in_a_string() {
         String line = "One cat, two cats, three catz.";
         String replacedValue = line.replaceFirst("[Cc]at([sz])+", "dog$1");
-
-        assertThat(replacedValue).isEqualTo(__);
+        assertThat(replacedValue).isEqualTo("One cat, two dogs, three catz.");
     }
 
     @Koan
@@ -164,21 +163,20 @@ class RegexKoans {
         String line = "1,name.description";
         String[] data = line.split("[,.]");
 
-        assertThat(data[0]).isEqualTo(__);
-        assertThat(data[1]).isEqualTo(__);
-        assertThat(data[2]).isEqualTo(__);
+        assertThat(data[0]).isEqualTo("1");
+        assertThat(data[1]).isEqualTo("name");
+        assertThat(data[2]).isEqualTo("description");
     }
 
     @Koan
     void you_should_really_learn_about_regex_matches() {
         Pattern pattern = Pattern.compile("^(?:(?:[\\w`~!#$%^&*\\-=+;:{}'|,?/]+(?:(?:\\.(?:\"(?:\\\\?[\\w`~!#$%^&*\\-=+;:{}'|,?/.()<>\\[\\] @]|\\\\\"|\\\\\\\\)*\"|[\\w`~!#$%^&*\\-=+;:{}'|,?/]+))*\\.[\\w`~!#$%^&*\\-=+;:{}'|,?/]+)?)|(?:\"(?:\\\\?[\\w`~!#$%^&*\\-=+;:{}'|,?/.()<>\\[\\] @]|\\\\\"|\\\\\\\\)+\"))@(?:[a-zA-Z\\d\\-]+(?:\\.[a-zA-Z\\d\\-]+)*|\\[\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}])$");
 
-        assertThat(pattern.matcher("user@example.com").matches()).isEqualTo(__);
-        assertThat(pattern.matcher("user.name@example.com").matches()).isEqualTo(__);
-        assertThat(pattern.matcher("user.name.with.last.name@example.com").matches()).isEqualTo(__);
-        assertThat(pattern.matcher("user.name+spam@example.com").matches()).isEqualTo(__);
-        assertThat(pattern.matcher("user.last-name@example.com").matches()).isEqualTo(__);
-        assertThat(pattern.matcher("user@example").matches()).isEqualTo(__);
+        assertThat(pattern.matcher("user@example.com").matches()).isEqualTo(true);
+        assertThat(pattern.matcher("user.name@example.com").matches()).isEqualTo(true);
+        assertThat(pattern.matcher("user.name.with.last.name@example.com").matches()).isEqualTo(true);
+        assertThat(pattern.matcher("user.last-name@example.com").matches()).isEqualTo(true);
+        assertThat(pattern.matcher("user@example").matches()).isEqualTo(true);
     }
 
     @Koan
@@ -186,7 +184,7 @@ class RegexKoans {
         try {
             Pattern.compile("][");
         } catch (final Exception exception) {
-            assertThat(exception.getClass()).isEqualTo(__);
+            assertThat(exception.getClass()).isEqualTo(java.util.regex.PatternSyntaxException.class);
         }
     }
 }

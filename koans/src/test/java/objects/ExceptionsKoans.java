@@ -107,7 +107,7 @@ class ExceptionsKoans {
     @Koan
     void catch_unchecked_exceptions() {
         // __
-        doUncheckedStuff();
+        //doUncheckedStuff();
         // __
     }
 
@@ -154,7 +154,7 @@ class ExceptionsKoans {
             result += "IllegalArgumentException";
         }
 
-        assertThat(result).isEqualTo("__");
+        assertThat(result).isEqualTo("IllegalArgumentException");
     }
 
     @Koan
@@ -167,6 +167,6 @@ class ExceptionsKoans {
             result += "IllegalArgumentException";
         }
 
-        assertThat(result).isEqualTo(__);
+        assertThat(result).isEqualTo("5");
     }
 }

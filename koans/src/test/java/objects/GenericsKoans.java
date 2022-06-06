@@ -42,11 +42,11 @@ class GenericsKoans {
 
         IntegerList integers = new IntegerList(3, 5, 7);
         int firstInt = integers.get(0);
-        assertThat(firstInt).isEqualTo(__);
+        assertThat(firstInt).isEqualTo(3);
 
         DoubleList doubles = new DoubleList(3.3, 5.5, 7.7);
-        double thirdDouble = doubles.get(3);
-        assertThat(thirdDouble).isEqualTo(__);
+        double thirdDouble = doubles.get(2);
+        assertThat(thirdDouble).isEqualTo(7.7);
     }
 
     @Koan
@@ -67,11 +67,11 @@ class GenericsKoans {
 
         NumberList integers = new NumberList(3, 5, 7);
         int firstInt = (int) integers.get(0); // Try to remove the cast to int. Does it compile? Why?
-        assertThat(firstInt).isEqualTo(__);
+        assertThat(firstInt).isEqualTo(3);
 
         NumberList doubles = new NumberList(3.3, 5.5, 7.7);
-        double thirdDouble = (double) doubles.get(3); // Try to remove the cast to double. Does it compile? Why?
-        assertThat(thirdDouble).isEqualTo(__);
+        double thirdDouble = (double) doubles.get(2); // Try to remove the cast to double. Does it compile? Why?
+        assertThat(thirdDouble).isEqualTo(7.7);
     }
 
     @Koan
@@ -90,7 +90,7 @@ class GenericsKoans {
         }
 
         NumberList integers = new NumberList(1, 2, 3, 4, 5, 6., 7, 8, 9);
-        assertThat(integers.get(5) instanceof Integer).isEqualTo(__);
+        assertThat(integers.get(5) instanceof Integer).isEqualTo(false);
     }
 
     @Koan
@@ -110,17 +110,17 @@ class GenericsKoans {
 
         GenericList<Integer> integers = new GenericList<Integer>(3, 5, 7);
         int firstInteger = integers.get(0); // You do not need to force cast the return type of the `get` method anymore!
-        assertThat(firstInteger).isEqualTo(__);
+        assertThat(firstInteger).isEqualTo(3);
 
         // When the generic type can be inferred by the compiler,
         GenericList<Double> doubles = new GenericList<>(3.3, 5.5, 7.7);
         double secondDouble = doubles.get(1); // ^-- This ("<>") is called the "Diamond Operator": it infers the generic type when possible.
-        assertThat(secondDouble).isEqualTo(__);
+        assertThat(secondDouble).isEqualTo(5.5);
 
         // You are not constraint to only use classes extending `Number` in this example.
         GenericList<String> strings = new GenericList<>("First", "Second", "Third");
         String thirdString = strings.get(2);
-        assertThat(thirdString).isEqualTo(__);
+        assertThat(thirdString).isEqualTo("Third");
 
         // When the Diamond Operator cannot infer the type, it uses `Object` as a default type.
         GenericList<Object> objects = new GenericList<>();
@@ -128,7 +128,7 @@ class GenericsKoans {
         // Without the generic type parameter, all generic types are considered as `Object`.
         GenericList integersOrObjects = new GenericList<>(3, 5, 7);
         Object isThisAnInt = integersOrObjects.get(1); // Try to change this variable type to `Integer`. Does it compile? Why?
-        assertThat(isThisAnInt instanceof Integer).isEqualTo(__);
+        assertThat(isThisAnInt instanceof Integer).isEqualTo(true);
 
         // GenericList<int> otherIntegers = new GenericList<>(3, 5, 7); // Try to uncomment this line. Does it compile? Why?
     }
@@ -152,12 +152,12 @@ class GenericsKoans {
         // `Integer` extends `Number`.
         NumberList<Integer> integers = new NumberList<>(3, 5, 7);
         int thirdInteger = integers.get(2);
-        assertThat(thirdInteger).isEqualTo(__);
+        assertThat(thirdInteger).isEqualTo(7);
 
         // `AtomicInteger` extends `Number`.
         NumberList<AtomicInteger> atomicIntegers = new NumberList<>(new AtomicInteger(1));
         AtomicInteger firstAtomicInteger = atomicIntegers.get(0);
-        assertThat(firstAtomicInteger.get()).isEqualTo(__);
+        assertThat(firstAtomicInteger.get()).isEqualTo(1);
 
         // NumberList<String> strings = new NumberList<>("First", "Second", "Third"); // Try to uncomment this line. Does it compile? Why?
     }
@@ -180,7 +180,7 @@ class GenericsKoans {
         // `Integer` extends `Number` and implements `Comparable`.
         NumberList<Integer> integers = new NumberList<>(3, 5, 7);
         int secondInteger = integers.get(1);
-        assertThat(secondInteger).isEqualTo(__);
+        assertThat(secondInteger).isEqualTo(5);
 
         // NumberList<AtomicInteger> atomicIntegers = new NumberList<>(new AtomicInteger(1)); // Try to uncomment this line. Does it compile? Why?
     }
@@ -191,8 +191,8 @@ class GenericsKoans {
 
     @Koan
     void a_method_can_take_a_generic_type_as_parameter() {
-        assertThat(getGenericValue(1) instanceof Integer).isEqualTo(__);
-        assertThat(getGenericValue(1.) instanceof Double).isEqualTo(__);
+        assertThat(getGenericValue(1) instanceof Integer).isEqualTo(true);
+        assertThat(getGenericValue(1.) instanceof Double).isEqualTo(true);
         // assertThat(getGenericValue("Generic parameter") instanceof String).isEqualTo(__); // Try to uncomment this line. Does it compile? Why?
     }
 
@@ -210,12 +210,12 @@ class GenericsKoans {
         }
 
         Pair<Integer, String> firstPair = new Pair<>(1, "Two");
-        assertThat(firstPair.left instanceof Integer).isEqualTo(__);
-        assertThat(firstPair.right instanceof String).isEqualTo(__);
+        assertThat(firstPair.left instanceof Integer).isEqualTo(true);
+        assertThat(firstPair.right instanceof String).isEqualTo(true);
 
         Pair<String, Double> pair = new Pair<>("One", 2.);
-        assertThat(pair.left instanceof String).isEqualTo(__);
-        assertThat(pair.right instanceof Double).isEqualTo(__);
+        assertThat(pair.left instanceof String).isEqualTo(true);
+        assertThat(pair.right instanceof Double).isEqualTo(true);
     }
 
     interface Animal {
@@ -301,12 +301,12 @@ class GenericsKoans {
         AnimalList<Animal> animals = new AnimalList<>(new Dog(), new Puppy(), new Cat());
 
         // Try to uncomment each line sequentially. Does it compile? Why?
-        String noises = (String) __;
-        // String noises = invariantAnimalNoises(animals);
+        // String noises = (String) __;
+        String noises = invariantAnimalNoises(animals);
         // String noises = covariantAnimalNoises(animals);
-        // String noises = covariantDogNoises(animals);
-        // String noises = covariantPuppyNoises(animals);
-        // String noises = covariantCatNoises(animals);
+        // String noises = covariantDogNoises(animals); doesn't compile
+        // String noises = covariantPuppyNoises(animals); doesn't compile
+        // String noises = covariantCatNoises(animals); doesn't compile
         // String noises = contravariantAnimalNoises(animals);
         // String noises = contravariantDogNoises(animals);
         // String noises = contravariantPuppyNoises(animals);
@@ -320,13 +320,13 @@ class GenericsKoans {
         AnimalList<Dog> dogs = new AnimalList<>(new Dog(), new Puppy());
 
         // Try to uncomment each line sequentially. Does it compile? Why?
-        String noises = (String) __;
-        // String noises = invariantAnimalNoises(dogs);
-        // String noises = covariantAnimalNoises(dogs);
+        // String noises = (String) __;
+        // String noises = invariantAnimalNoises(dogs); doesn't compile
+        String noises = covariantAnimalNoises(dogs);
         // String noises = covariantDogNoises(dogs);
-        // String noises = covariantPuppyNoises(dogs);
-        // String noises = covariantCatNoises(dogs);
-        // String noises = contravariantAnimalNoises(dogs);
+        // String noises = covariantPuppyNoises(dogs); doesn't compile
+        // String noises = covariantCatNoises(dogs); doesn't compile
+        // String noises = contravariantAnimalNoises(dogs); doesn't compile
         // String noises = contravariantDogNoises(dogs);
         // String noises = contravariantPuppyNoises(dogs);
         // String noises = contravariantCatNoises(dogs);
@@ -339,9 +339,9 @@ class GenericsKoans {
         AnimalList<Puppy> puppies = new AnimalList<>(new Puppy());
 
         // Try to uncomment each line sequentially. Does it compile? Why?
-        String noises = (String) __;
+        // String noises = (String) __;
         // String noises = invariantAnimalNoises(puppies);
-        // String noises = covariantAnimalNoises(puppies);
+        String noises = covariantAnimalNoises(puppies);
         // String noises = covariantDogNoises(puppies);
         // String noises = covariantPuppyNoises(puppies);
         // String noises = covariantCatNoises(puppies);
@@ -358,9 +358,9 @@ class GenericsKoans {
         AnimalList<Cat> cats = new AnimalList<>(new Cat());
 
         // Try to uncomment each line sequentially. Does it compile? Why?
-        String noises = (String) __;
+        // String noises = (String) __;
         // String noises = invariantAnimalNoises(cats);
-        // String noises = covariantAnimalNoises(cats);
+        String noises = covariantAnimalNoises(cats);
         // String noises = covariantDogNoises(cats);
         // String noises = covariantPuppyNoises(cats);
         // String noises = covariantCatNoises(cats);
