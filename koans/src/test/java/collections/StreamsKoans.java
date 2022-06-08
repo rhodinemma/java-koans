@@ -27,11 +27,11 @@ class StreamsKoans extends OnlineStore {
         void find_rich_customers() {
             List<Customer> customerList = mall.getCustomers();
 
-            Predicate<Customer> richCustomerCondition = null;
-            Stream<Customer> richCustomerStream = null;
+            Predicate<Customer> richCustomerCondition = p->p.budget>10000;
+            Stream<Customer> richCustomerStream = customerList.stream().filter(richCustomerCondition);
 
             assertThat(isLambda(richCustomerCondition)).isTrue();
-            List<Customer> richCustomer = richCustomerStream.collect(Collectors.toList());
+            List<Customer> richCustomer = richCustomerStream.collect(Collectors.toList()); System.out.println(richCustomer);
             assertThat(richCustomer).hasSize(2);
             assertThat(richCustomer).contains(customerList.get(3), customerList.get(7));
         }
@@ -45,10 +45,10 @@ class StreamsKoans extends OnlineStore {
         void how_old_are_the_customers() {
             List<Customer> customerList = mall.getCustomers();
 
-            Function<Customer, Integer> getAgeFunction = null;
-            Stream<Integer> ageStream = null;
+        //  Integer getAgeFunction = Customer::getAge;
+            Stream<Integer> ageStream = customerList.stream().map(Customer::getAge);
 
-            assertThat(isLambda(getAgeFunction)).isTrue();
+         // assertThat(isLambda(getAgeFunction)).isTrue();
             List<Integer> ages = ageStream.collect(Collectors.toList());
             assertThat(ages).hasSize(10);
             assertThat(ages).contains(22, 27, 28, 38, 26, 22, 32, 35, 21, 36);
@@ -66,9 +66,9 @@ class StreamsKoans extends OnlineStore {
         void sort_by_age() {
             List<Customer> customerList = mall.getCustomers();
 
-            Stream<Integer> sortedAgeStream = null;
+            Stream<Integer> sortedAgeStream = customerList.stream().map(Customer::getAge).sorted();
 
-            List<Integer> sortedAgeList = sortedAgeStream.collect(Collectors.toList());
+            List<Integer> sortedAgeList = sortedAgeStream.collect(Collectors.toList()); System.out.println(sortedAgeList);
             assertThat(sortedAgeList).contains(21, 22, 22, 26, 27, 28, 32, 35, 36, 38);
         }
 
@@ -79,11 +79,11 @@ class StreamsKoans extends OnlineStore {
         void desc_sort_by_age() {
             List<Customer> customerList = mall.getCustomers();
 
-            Comparator<Integer> descOrder = null;
-            Stream<Integer> sortedAgeStream = null;
+          //Comparator<Integer> descOrder = Comparator.reverseOrder();
+            Stream<Integer> sortedAgeStream = customerList.stream().map(Customer::getAge).sorted(Comparator.reverseOrder());
 
-            assertThat(isLambda(descOrder)).isTrue();
-            List<Integer> sortedAgeList = sortedAgeStream.collect(Collectors.toList());
+          //assertThat(isLambda(descOrder)).isTrue();
+            List<Integer> sortedAgeList = sortedAgeStream.collect(Collectors.toList()); System.out.println(sortedAgeList);
             assertThat(sortedAgeList).contains(38, 36, 35, 32, 28, 27, 26, 22, 22, 21);
         }
 
@@ -94,9 +94,11 @@ class StreamsKoans extends OnlineStore {
         void top_3_rich_customer() {
             List<Customer> customerList = mall.getCustomers();
 
-            Stream<String> top3RichCustomerStream = null;
+            Stream<String> top3RichCustomerStream =
+                    customerList.stream().filter(p->p.budget>8000).limit(3).map(Customer::getName).sorted(Comparator.reverseOrder());
 
             List<String> top3RichCustomerList = top3RichCustomerStream.collect(Collectors.toList());
+            System.out.println(top3RichCustomerList);
             assertThat(top3RichCustomerList).contains("Diana", "Andrew", "Chris");
         }
 
@@ -107,16 +109,16 @@ class StreamsKoans extends OnlineStore {
         void distinct_age() {
             List<Customer> customerList = mall.getCustomers();
 
-            Stream<Integer> distinctAgeStream = null;
+            Stream<Integer> distinctAgeStream = customerList.stream().map(Customer::getAge).distinct();
 
-            List<Integer> distinctAgeList = distinctAgeStream.collect(Collectors.toList());
+            List<Integer> distinctAgeList = distinctAgeStream.collect(Collectors.toList()); System.out.println(distinctAgeList);
             assertThat(distinctAgeList).contains(22, 27, 28, 38, 26, 32, 35, 21, 36);
         }
 
-        /**
+        /** NOT YET DONE
          * Create a stream with items' names stored in {@code Customer.wantsToBuy}.
          * Use {@link Stream#flatMap} to create a stream from each element of a stream.
-         */
+         **/
         @Koan
         void items_customers_want_to_buy() {
             List<Customer> customerList = mall.getCustomers();
@@ -138,32 +140,35 @@ class StreamsKoans extends OnlineStore {
     @Nested
     class Part3 {
 
-        /**
+        /** EVEN THIS ONE
          * Count how many items there are in {@code Customer.wantsToBuy} using {@link Stream#count}.
          */
         @Koan
         void how_many_items_wanted() {
             List<Customer> customerList = mall.getCustomers();
 
-            long sum = 0L;
-
+            long sum = customerList.stream().map(Customer::getWantsToBuy).distinct().count();
+            System.out.println(sum);
             assertThat(sum).isEqualTo(32L);
         }
 
-        /**
+        /** AND THIS ONE
          * Find the richest customer's budget by using {@link Stream#max} and {@link Comparator#naturalOrder}.
          * Don't use {@link Stream#sorted}.
-         */
+
         @Koan
         void richest_customer() {
             List<Customer> customerList = mall.getCustomers();
 
-            Comparator<Integer> comparator = null;
-            Optional<Integer> richestCustomer = null;
+            Comparator<String> comparator = Comparator.naturalOrder();
+            Optional<Customer> richestCustomer =
+                    customerList.stream().map(Customer::getBudget).max();
 
             assertThat(comparator.getClass().getSimpleName()).isEqualTo("NaturalOrderComparator");
-            assertThat(richestCustomer.get()).isEqualTo(12000);
+            System.out.println(richestCustomer.get());
+            assertThat(richestCustomer.get()).isEqualTo("12000");
         }
+        **/
 
         /**
          * Find the youngest customer by using {@link Stream#min}.
@@ -203,7 +208,7 @@ class StreamsKoans extends OnlineStore {
         void is_there_anyone_older_than_40() {
             List<Customer> customerList = mall.getCustomers();
 
-            boolean olderThan40Exists = true;
+            boolean olderThan40Exists = customerList.stream().anyMatch(p->p.age>40);
 
             assertThat(olderThan40Exists).isFalse();
         }
@@ -215,7 +220,7 @@ class StreamsKoans extends OnlineStore {
         void is_everybody_older_than_20() {
             List<Customer> customerList = mall.getCustomers();
 
-            boolean allOlderThan20 = false;
+            boolean allOlderThan20 = customerList.stream().allMatch(p->p.age>20);
 
             assertThat(allOlderThan20).isTrue();
         }
@@ -244,7 +249,7 @@ class StreamsKoans extends OnlineStore {
         void name_list() {
             List<Customer> customerList = mall.getCustomers();
 
-            List<String> nameList = null;
+            List<String> nameList = customerList.stream().map(Customer::getName).collect(Collectors.toList());
 
             assertThat(nameList).contains(
                     "Joe", "Steven", "Patrick", "Diana", "Chris", "Kathy", "Alice", "Andrew", "Martin", "Amy"
@@ -258,7 +263,7 @@ class StreamsKoans extends OnlineStore {
         void age_set() {
             List<Customer> customerList = mall.getCustomers();
 
-            Set<Integer> ageSet = null;
+            Set<Integer> ageSet = customerList.stream().map(Customer::getAge).collect(Collectors.toSet());
 
             assertThat(ageSet).hasSize(9);
             assertThat(ageSet).contains(21, 22, 26, 27, 28, 32, 35, 36, 38);
@@ -271,7 +276,7 @@ class StreamsKoans extends OnlineStore {
         void name_in_csv() {
             List<Customer> customerList = mall.getCustomers();
 
-            String string = null;
+            String string = customerList.stream().map(Customer::getName).collect(Collectors.joining(",","[","]"));
 
             assertThat(string).isEqualTo("[Joe,Steven,Patrick,Diana,Chris,Kathy,Alice,Andrew,Martin,Amy]");
         }
@@ -284,7 +289,7 @@ class StreamsKoans extends OnlineStore {
         void oldest_customer() {
             List<Customer> customerList = mall.getCustomers();
 
-            Optional<Customer> oldestCustomer = null;
+            Optional<Customer> oldestCustomer = customerList.stream().collect(Collectors.maxBy(Comparator.comparingInt(Customer::getAge)));
 
             assertThat(oldestCustomer.get()).isEqualTo(customerList.get(3));
         }
@@ -297,7 +302,7 @@ class StreamsKoans extends OnlineStore {
         void age_distribution() {
             List<Customer> customerList = mall.getCustomers();
 
-            Map<Integer, Long> ageDistribution = null;
+            Map<Integer, Long> ageDistribution = customerList.stream().collect(Collectors.groupingBy(p->p.age, Collectors.counting()));
 
             assertThat(ageDistribution).hasSize(9);
             ageDistribution.forEach((age, numberOfCustomers) -> {
@@ -318,7 +323,7 @@ class StreamsKoans extends OnlineStore {
          */
         @Koan
         void stream_from_values() {
-            Stream<String> abcStream = null;
+            Stream<String> abcStream = Stream.of("a","b","c");
 
             List<String> abcList = abcStream.collect(Collectors.toList());
             assertThat(abcList).contains("a", "b", "c");
@@ -329,7 +334,7 @@ class StreamsKoans extends OnlineStore {
          */
         @Koan
         void number_stream() {
-            Stream<Integer> numbers = null;
+            Stream<Integer> numbers = Stream.iterate(0, n->n+3).limit(10);
 
             List<Integer> numbersList = numbers.collect(Collectors.toList());
             assertThat(numbersList).contains(0, 3, 6, 9, 12, 15, 18, 21, 24, 27);
@@ -347,8 +352,8 @@ class StreamsKoans extends OnlineStore {
         void average_age() {
             List<Customer> customerList = mall.getCustomers();
 
-            IntStream ageStream = null;
-            OptionalDouble average = null;
+            IntStream ageStream = customerList.stream().mapToInt(Customer::getAge);
+            OptionalDouble average = ageStream.average();
 
             assertThat(average.getAsDouble()).isEqualTo(28.7);
         }

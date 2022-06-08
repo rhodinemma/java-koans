@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class Customer {
 
-    private final String name;
-    private final Integer age;
-    private final Integer budget;
-    private final List<Item> wantsToBuy;
+    public final String name;
+    public final Integer age;
+    public final Integer budget;
+    public final List<Item> wantsToBuy;
 
     public Customer(final String name, final Integer age, final Integer budget, final List<Item> wantsToBuy) {
         this.name = name;
