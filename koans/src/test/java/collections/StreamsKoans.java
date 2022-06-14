@@ -149,26 +149,25 @@ class StreamsKoans extends OnlineStore {
 
             long sum = customerList.stream().map(Customer::getWantsToBuy).distinct().count();
             System.out.println(sum);
-            assertThat(sum).isEqualTo(32L);
+            assertThat(sum).isEqualTo(10L);
         }
 
         /** AND THIS ONE
          * Find the richest customer's budget by using {@link Stream#max} and {@link Comparator#naturalOrder}.
          * Don't use {@link Stream#sorted}.
-
+        **/
         @Koan
         void richest_customer() {
             List<Customer> customerList = mall.getCustomers();
 
-            Comparator<String> comparator = Comparator.naturalOrder();
-            Optional<Customer> richestCustomer =
-                    customerList.stream().map(Customer::getBudget).max();
+            Comparator<Integer> comparator = Comparator.naturalOrder();
+            Optional<Integer> richestCustomer =
+                    customerList.stream().map(Customer::getBudget).max(comparator);
 
             assertThat(comparator.getClass().getSimpleName()).isEqualTo("NaturalOrderComparator");
-            System.out.println(richestCustomer.get());
-            assertThat(richestCustomer.get()).isEqualTo("12000");
+            assertThat(richestCustomer.get()).isEqualTo(12000);
         }
-        **/
+
 
         /**
          * Find the youngest customer by using {@link Stream#min}.
@@ -178,8 +177,8 @@ class StreamsKoans extends OnlineStore {
         void youngest_customer() {
             List<Customer> customerList = mall.getCustomers();
 
-            Comparator<Customer> comparator = null;
-            Optional<Customer> youngestCustomer = null;
+            Comparator<Customer> comparator = Comparator.comparingInt(Customer::getAge);
+            Optional<Customer> youngestCustomer = customerList.stream().min(comparator);
 
             assertThat(youngestCustomer.get()).isEqualTo(customerList.get(8));
         }
@@ -196,7 +195,7 @@ class StreamsKoans extends OnlineStore {
         void first_registrant() {
             List<Customer> customerList = mall.getCustomers();
 
-            Optional<Customer> firstCustomer = null;
+            Optional<Customer> firstCustomer = customerList.stream().findFirst();
 
             assertThat(firstCustomer.get()).isEqualTo(customerList.get(0));
         }
@@ -233,7 +232,7 @@ class StreamsKoans extends OnlineStore {
         void everyone_wants_something() {
             List<Customer> customerList = mall.getCustomers();
 
-            boolean everyoneWantsSomething = false;
+            boolean everyoneWantsSomething = customerList.stream().noneMatch(p->p.wantsToBuy.isEmpty());
 
             assertThat(everyoneWantsSomething).isTrue();
         }
@@ -358,7 +357,7 @@ class StreamsKoans extends OnlineStore {
             assertThat(average.getAsDouble()).isEqualTo(28.7);
         }
 
-        /**
+        /** ACCESS THE PRICES
          * Create {@link LongStream} with all items' prices using {@link Stream#mapToLong}.
          * Then calculate the sum of prices using {@link LongStream#sum}.
          */
@@ -376,7 +375,7 @@ class StreamsKoans extends OnlineStore {
     @Nested
     class Part8 {
 
-        /**
+        /** ACCESS THE ITEM NAMES IN .CUSTOMERWANTSTOBUY
          * Create a set of item names that are in {@code Customer.wantsToBuy} but not on sale in any shop.
          */
         @Koan
