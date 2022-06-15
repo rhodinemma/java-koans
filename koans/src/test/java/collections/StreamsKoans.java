@@ -122,10 +122,12 @@ class StreamsKoans extends OnlineStore {
         @Koan
         void items_customers_want_to_buy() {
             List<Customer> customerList = mall.getCustomers();
-
-            Function<Customer, Stream<Item>> getItemStream = null;
-            Stream<String> itemStream = null;
-
+            //System.out.println(customerList);
+            Function<Customer, Stream<Item>> getItemStream = p->p.getWantsToBuy().stream();
+            //System.out.println(getItemStream);
+            Stream<String> itemStream =
+                    customerList.stream().flatMap(p->{ return p.getWantsToBuy().stream().map(Item::getName);});
+            //System.out.println(customerList.stream().flatMap(p->{ return p.getWantsToBuy().stream().map(Item::getName);}).collect(Collectors.toList()));
             assertThat(isLambda(getItemStream)).isTrue();
             List<String> itemList = itemStream.collect(Collectors.toList());
             assertThat(itemList).contains(
@@ -140,19 +142,19 @@ class StreamsKoans extends OnlineStore {
     @Nested
     class Part3 {
 
-        /** EVEN THIS ONE
+        /**
          * Count how many items there are in {@code Customer.wantsToBuy} using {@link Stream#count}.
          */
         @Koan
         void how_many_items_wanted() {
             List<Customer> customerList = mall.getCustomers();
 
-            long sum = customerList.stream().map(Customer::getWantsToBuy).distinct().count();
+            long sum = customerList.stream().flatMap(p->p.getWantsToBuy().stream().map(Item::getName)).count();
             System.out.println(sum);
-            assertThat(sum).isEqualTo(10L);
+            assertThat(sum).isEqualTo(32L);
         }
 
-        /** AND THIS ONE
+        /**
          * Find the richest customer's budget by using {@link Stream#max} and {@link Comparator#naturalOrder}.
          * Don't use {@link Stream#sorted}.
         **/
@@ -365,8 +367,10 @@ class StreamsKoans extends OnlineStore {
         void how_much_to_buy_all_items() {
             List<Shop> shopList = mall.getShops();
 
-            LongStream priceStream = null;
-            long priceSum = 0;
+            LongStream priceStream = shopList.stream().flatMapToLong(p -> {
+                return p.getItems().stream().mapToLong(Item::getPrice);
+            });
+            long priceSum = priceStream.sum();
 
             assertThat(priceSum).isEqualTo(60930L);
         }
@@ -375,7 +379,7 @@ class StreamsKoans extends OnlineStore {
     @Nested
     class Part8 {
 
-        /** ACCESS THE ITEM NAMES IN .CUSTOMERWANTSTOBUY
+        /**
          * Create a set of item names that are in {@code Customer.wantsToBuy} but not on sale in any shop.
          */
         @Koan
@@ -383,8 +387,16 @@ class StreamsKoans extends OnlineStore {
             Stream<Customer> customerStream = mall.getCustomers().stream();
             Stream<Shop> shopStream = mall.getShops().stream();
 
-            List<String> itemListOnSale = null;
-            Set<String> itemSetNotOnSale = null;
+            List<String> itemListOnSale = shopStream.flatMap(p->{
+                return p.getItems().stream().map(Item::getName);
+            }).collect(Collectors.toList());
+            System.out.println(itemListOnSale);
+
+            // filter(itemListOnSale::contains)
+            Set<String> itemSetNotOnSale = customerStream.flatMap(p->{
+                return p.getWantsToBuy().stream().map(Item::getName).filter(Predicate.not(itemListOnSale::contains));
+            }).collect(Collectors.toSet());
+            System.out.println(itemSetNotOnSale);
 
             assertThat(itemSetNotOnSale).hasSize(3);
             assertThat(itemSetNotOnSale).contains("bag", "pants", "coat");
