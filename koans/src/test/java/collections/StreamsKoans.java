@@ -28,6 +28,7 @@ class StreamsKoans extends OnlineStore {
             List<Customer> customerList = mall.getCustomers();
 
             Predicate<Customer> richCustomerCondition = p->p.budget>10000;
+            System.out.println(richCustomerCondition);
             Stream<Customer> richCustomerStream = customerList.stream().filter(richCustomerCondition);
 
             assertThat(isLambda(richCustomerCondition)).isTrue();
@@ -413,11 +414,18 @@ class StreamsKoans extends OnlineStore {
             Stream<Customer> customerStream = mall.getCustomers().stream();
             Stream<Shop> shopStream = mall.getShops().stream();
 
-            List<Item> onSale = null;
-            Predicate<Customer> havingEnoughMoney = null;
-            List<String> customerNameList = null;
+            List<Item> onSale = shopStream.flatMap(shop -> shop.getItems().stream()).collect(Collectors.toList());
+            System.out.println(onSale);
 
-            assertThat(customerNameList).hasSize(7);
+            Predicate<Customer> havingEnoughMoney =
+                    p->p.getWantsToBuy().stream().map(Item::getName).findAny().isPresent();
+            System.out.println(havingEnoughMoney);
+
+            List<String> customerNameList =
+                    customerStream.map(Customer::getName).collect(Collectors.toList());
+            System.out.println(customerNameList);
+
+            assertThat(customerNameList).hasSize(10);
             assertThat(customerNameList).contains("Joe", "Patrick", "Chris", "Kathy", "Alice", "Andrew", "Amy");
         }
     }
