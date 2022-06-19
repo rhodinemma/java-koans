@@ -415,17 +415,14 @@ class StreamsKoans extends OnlineStore {
             Stream<Shop> shopStream = mall.getShops().stream();
 
             List<Item> onSale = shopStream.flatMap(shop -> shop.getItems().stream()).collect(Collectors.toList());
-            System.out.println(onSale);
-
             Predicate<Customer> havingEnoughMoney =
-                    p->p.getWantsToBuy().stream().map(Item::getName).findAny().isPresent();
-            System.out.println(havingEnoughMoney);
+                    customer -> customer.getBudget() >= customer.getWantsToBuy().stream().mapToInt(
+                            wantedItem -> onSale.stream().filter(shopItem -> shopItem.getName().equals(wantedItem.getName())).min(Comparator.comparingInt(Item::getPrice)).map(Item::getPrice).orElse(0)
+                    ).sum();
+            List<String> customerNameList = customerStream.filter(havingEnoughMoney)
+                    .map(Customer::getName).collect(Collectors.toList());
 
-            List<String> customerNameList =
-                    customerStream.map(Customer::getName).collect(Collectors.toList());
-            System.out.println(customerNameList);
-
-            assertThat(customerNameList).hasSize(10);
+            assertThat(customerNameList).hasSize(7);
             assertThat(customerNameList).contains("Joe", "Patrick", "Chris", "Kathy", "Alice", "Andrew", "Amy");
         }
     }
@@ -441,10 +438,11 @@ class StreamsKoans extends OnlineStore {
         void simplest_string_join() {
             List<Customer> customerList = mall.getCustomers();
 
-            Supplier<Object> supplier = null;
-            BiConsumer<Object, String> accumulator = null;
-            BinaryOperator<Object> combiner = null;
-            Function<Object, String> finisher = null;
+            Supplier<StringJoiner> supplier = () -> new StringJoiner(",", "", "");
+            System.out.println(supplier);
+            BiConsumer<StringJoiner, String> accumulator = StringJoiner::add;
+            BinaryOperator<StringJoiner> combiner = null;
+            Function<StringJoiner, String> finisher = StringJoiner::toString;
 
             Collector<String, ?, String> toCsv = new SimpleCollector<>(
                     supplier,
@@ -466,10 +464,28 @@ class StreamsKoans extends OnlineStore {
         void map_keyed_by_items() {
             List<Customer> customerList = mall.getCustomers();
 
-            Supplier<Object> supplier = null;
-            BiConsumer<Object, Customer> accumulator = null;
-            BinaryOperator<Object> combiner = null;
-            Function<Object, Map<String, Set<String>>> finisher = null;
+            Supplier<Map<String, Set<String>>> supplier = HashMap::new;
+            BiConsumer<Map<String, Set<String>>, Customer> accumulator = (map, customer) ->{
+                customer.getWantsToBuy().forEach(
+                        item->{
+                            if(map.containsKey(item.getName())){
+                                map.get(item.getName()).add(customer.getName());
+                            } else {
+                                map.put(item.getName(), Stream.of(customer.getName()).collect(Collectors.toSet()));
+                            }
+                        }
+                );
+            };
+            BinaryOperator<Map<String, Set<String>>> combiner = (left, right) -> {
+                right.forEach((item, customers) -> {
+                    left.merge(item, customers, (oldVal, newVal)->{
+                        oldVal.addAll(newVal);
+                        return oldVal;
+                    });
+                });
+                return left;
+            };
+            Function<Map<String, Set<String>>, Map<String, Set<String>>> finisher = null;
 
             Collector<Customer, ?, Map<String, Set<String>>> toItemAsKey = new SimpleCollector<>(
                     supplier,
@@ -501,7 +517,64 @@ class StreamsKoans extends OnlineStore {
         void bit_list_to_bit_string() {
             String bitList = "22-24,9,42-44,11,4,46,14-17,5,2,38-40,33,50,48";
 
-            Collector<String, ?, String> toBitString = null;
+            Collector<String, ?, String> toBitString = new Collector<String, List<Integer>, String>() {
+                @Override public Supplier<List<Integer>> supplier() {
+                    return ArrayList::new;
+                }
+
+                @Override public BiConsumer<List<Integer>, String> accumulator() {
+                    return (list, str) -> {
+                        List<String> splitString = Arrays.asList(str.split("-"));
+                        List<Integer> splitInt = splitString.stream().map(Integer::valueOf).collect(Collectors.toList());
+                        if (splitInt.size() > 1) {
+                            list.addAll(Stream.iterate(splitInt.get(0), e -> ++e)
+                                    .limit(splitInt.get(1) - splitInt.get(0) + 1)
+                                    .collect(Collectors.toList()));
+                        } else {
+                            list.add(splitInt.get(0));
+                        }
+                    };
+                }
+
+                @Override public BinaryOperator<List<Integer>> combiner() {
+                    return null;
+                }
+
+                @Override public Function<List<Integer>, String> finisher() {
+                    return list -> {
+                        long max = list.stream().max(Comparator.naturalOrder()).get();
+                        return list.stream().distinct().collect(
+                                new Collector<Integer, List<String>, String>() {
+                                    @Override public Supplier<List<String>> supplier() {
+                                        return () -> Stream.generate(() -> "0")
+                                                .limit(max)
+                                                .collect(Collectors.toList());
+                                    }
+
+                                    @Override public BiConsumer<List<String>, Integer> accumulator() {
+                                        return (strList, nth) -> strList.set(nth - 1, "1");
+                                    }
+
+                                    @Override public BinaryOperator<List<String>> combiner() {
+                                        return null;
+                                    }
+
+                                    @Override public Function<List<String>, String> finisher() {
+                                        return strList -> strList.stream().collect(Collectors.joining());
+                                    }
+
+                                    @Override public Set<Characteristics> characteristics() {
+                                        return Collections.emptySet();
+                                    }
+                                });
+                    };
+                }
+
+                @Override public Set<Characteristics> characteristics() {
+                    return Collections.emptySet();
+                }
+            };
+
 
             String bitString = Arrays.stream(bitList.split(",")).collect(toBitString);
             assertThat(bitString).isEqualTo("01011000101001111000011100000000100001110111010101");
